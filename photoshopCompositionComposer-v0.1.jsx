@@ -104,9 +104,9 @@ function combine() {
 
       var includePSDFiles = confirm('Would you like to include corresponding PSD documents?');
 
+      hideAllArtLayers();
       for(var i = 0; i < generateCount; i++) {
         var x = Math.floor(Math.random() * artLayerCollectionCollectionCombinations.length)
-        hideAllArtLayers();
         var artLayerNames = [];
         for(var z = 0; z < artLayerCollectionCollectionCombinations[x].length; z++) {
           var artLayer = artLayerCollectionCollectionCombinations[x][z];
@@ -117,6 +117,10 @@ function combine() {
         saveDocumentAsPNG(savePath + '/' + normalizeSaveFileName(artLayerNames.join('_')).substr(0, 200) + '.png');
         if(includePSDFiles) saveDocumentAsPSD(savePath + '/' + normalizeSaveFileName(artLayer.parent.name + artLayerNames.join('')).substr(0, 254));
         alert('Saved ' + x);
+        // Hide layers again
+        for(var z = 0; z < artLayerCollectionCollectionCombinations[x].length; z++) {
+          artLayerCollectionCollectionCombinations[x][z].visible = false;
+        }
       }
       alert('Done! :3');
 }
