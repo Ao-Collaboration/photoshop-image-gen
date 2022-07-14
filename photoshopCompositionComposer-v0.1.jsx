@@ -104,9 +104,16 @@ function combine() {
 
       var includePSDFiles = confirm('Would you like to include corresponding PSD documents?');
 
+      var usedIds = []
+
       hideAllArtLayers();
       for(var i = 0; i < generateCount; i++) {
-        var x = Math.floor(Math.random() * artLayerCollectionCollectionCombinations.length)
+        var x = Math.floor(Math.random() * artLayerCollectionCollectionCombinations.length);
+        while (usedIds.join(',').indexOf(x) > -1) {
+          x = Math.floor(Math.random() * artLayerCollectionCollectionCombinations.length);
+        }
+        usedIds.push(x);
+
         var artLayerNames = [];
         for(var z = 0; z < artLayerCollectionCollectionCombinations[x].length; z++) {
           var artLayer = artLayerCollectionCollectionCombinations[x][z];
