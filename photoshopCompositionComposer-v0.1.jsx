@@ -114,8 +114,8 @@ function combine() {
           artLayerNames.push(artLayer.parent.name);
           artLayerNames.push(artLayer.name);
         }
-        saveDocumentAsPNG(savePath + '/' + normalizeSaveFileName(artLayerNames.join('_')).substr(0, 200) + '.png');
-        if(includePSDFiles) saveDocumentAsPSD(savePath + '/' + normalizeSaveFileName(artLayer.parent.name + artLayerNames.join('')).substr(0, 254));
+        saveDocumentAsPNG(savePath + '/' + i + '.png');
+        if(includePSDFiles) saveDocumentAsPSD(savePath + '/' + i + '.psd');
         alert('Saved ' + x);
         // Hide layers again
         for(var z = 0; z < artLayerCollectionCollectionCombinations[x].length; z++) {
