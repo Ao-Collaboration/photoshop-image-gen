@@ -91,24 +91,34 @@ function combine() {
 
       continueConfirmation = confirm(artLayerCollectionCollectionCombinations.length + " combinations found. Would you like to continue?");
 
+      // Get how many to generate
+      var generateCount = prompt("How many images would you like to generate? (1-" + artLayerCollectionCollectionCombinations.length + ")", 5);
+      if (isNaN(generateCount) || generateCount <= 0 || generateCount > artLayerCollectionCollectionCombinations.length) {
+        return alert('Invalid amount. Script has been aborted.');
+      }
+
       if(! continueConfirmation ) return alert('Script has been aborted.');
 
       savePath = Folder.selectDialog("Select an output folder");
+      if(! savePath ) return alert('Script has been aborted.');
 
-      var includePSDFiles = confirm('Would you like to include corresponding PSD documents?')
+      var includePSDFiles = confirm('Would you like to include corresponding PSD documents?');
 
-      for(var i = 0; i < artLayerCollectionCollectionCombinations.length; i++) {
+      for(var i = 0; i < generateCount; i++) {
+        var x = Math.floor(Math.random() * artLayerCollectionCollectionCombinations.length)
         hideAllArtLayers();
         var artLayerNames = [];
-        for(var z = 0; z < artLayerCollectionCollectionCombinations[i].length; z++) {
-          var artLayer = artLayerCollectionCollectionCombinations[i][z];
+        for(var z = 0; z < artLayerCollectionCollectionCombinations[x].length; z++) {
+          var artLayer = artLayerCollectionCollectionCombinations[x][z];
           artLayer.visible = true;
           artLayerNames.push(artLayer.parent.name);
           artLayerNames.push(artLayer.name);
         }
-        saveDocumentAsPNG(savePath + '/' + normalizeSaveFileName(artLayerNames.join('')).substr(0, 254));
+        saveDocumentAsPNG(savePath + '/' + normalizeSaveFileName(artLayerNames.join('_')).substr(0, 200) + '.png');
         if(includePSDFiles) saveDocumentAsPSD(savePath + '/' + normalizeSaveFileName(artLayer.parent.name + artLayerNames.join('')).substr(0, 254));
+        alert('Saved ' + x);
       }
+      alert('Done! :3');
 }
 
 function getSmallestLayerSetCount() {
