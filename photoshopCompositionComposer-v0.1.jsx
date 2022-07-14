@@ -114,15 +114,15 @@ function combine() {
         }
         usedIds.push(x);
 
-        var artLayerNames = [];
-        for(var z = 0; z < artLayerCollectionCollectionCombinations[x].length; z++) {
+        var attributes = [];
+        for (var z = 0; z < artLayerCollectionCollectionCombinations[x].length; z++) {
           var artLayer = artLayerCollectionCollectionCombinations[x][z];
           artLayer.visible = true;
-          artLayerNames.push(artLayer.parent.name);
-          artLayerNames.push(artLayer.name);
+          attributes.push('{"trait_type": "' + artLayer.parent.name + '","value":"' + artLayer.name + '"}');
         }
         saveDocumentAsPNG(savePath + '/' + i + '.png');
         if(includePSDFiles) saveDocumentAsPSD(savePath + '/' + i + '.psd');
+        saveMetadata(savePath + '/' + i + '.json', i, attributes);
         alert('Saved ' + x);
         // Hide layers again
         for(var z = 0; z < artLayerCollectionCollectionCombinations[x].length; z++) {
@@ -168,6 +168,24 @@ function saveDocumentAsPNG(path) {
 
 function saveDocumentAsPSD(path) {
   app.activeDocument.saveAs(new File(path), new PhotoshopSaveOptions());
+}
+
+function saveMetadata(path, id, attributes) {
+  var content = '{"name":"","description":"","image":"ipfs://HASH/' + id + '.png","external_url":"https://FIXME","attributes":[' + attributes.join(',') + ']}';
+
+  var saveFile = new File(path);
+  saveFile.encoding = "UTF8";
+  saveFile.open("w");
+  if (saveFile.error != "")
+      return saveFile.error;
+
+  saveFile.write(content);
+  if (saveFile.error != "")
+      return saveFile.error;
+
+  saveFile.close();
+  if (saveFile.error != "")
+      return saveFile.error;
 }
 
 combine();
